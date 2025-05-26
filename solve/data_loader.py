@@ -11,15 +11,15 @@ class DataLoader:
             df_port_cust_dist_input = pd.read_excel(self.file_path, sheet_name="PortCustDist", header=1)
             return df_locations_input, df_port_cust_dist_input
         except FileNotFoundError as e:
-            print(f"错误：Excel文件 '{self.file_path}' 未找到。请确保文件路径正确：{e}")
+            print(f"Error: Excel file '{self.file_path}' not found. Please ensure the file path is correct: {e}")
             raise
         except Exception as e:
-            print(f"加载数据时发生错误: {e}")
+            print(f"Error loading data: {e}")
             raise
 
     def preprocess_data(self, df_locations_input, df_port_cust_dist_input):
         """Preprocesses and merges the loaded dataframes."""
-        # 清洗客户位置数据 (df_locations)
+        # Clean customer location data (df_locations)
         df_locations_input.columns = ['Cust_Location_Num', 'Customer_Location', 'State_UT',
                                 'AM1_Dist', 'AM1_M1', 'AM1_M2', 'AM1_M3',
                                 'AM2_Dist', 'AM2_M1', 'AM2_M2', 'AM2_M3',
@@ -32,7 +32,7 @@ class DataLoader:
         for col in num_cols_loc:
             df_locations_input[col] = pd.to_numeric(df_locations_input[col], errors='coerce')
 
-        # 清洗港口到客户距离数据 (df_port_cust_dist)
+        # Clean port to customer distance data (df_port_cust_dist)
         df_port_cust_dist_input.rename(columns={
             'Distance (km)':'Customer_Location_PortFile',
             'Chennai':'Dist_to_Chennai_Port',
@@ -44,8 +44,8 @@ class DataLoader:
         df_port_cust_dist_input['Dist_to_Chennai_Port'] = pd.to_numeric(df_port_cust_dist_input['Dist_to_Chennai_Port'], errors='coerce')
         df_port_cust_dist_input['Dist_to_Pipavav_Port'] = pd.to_numeric(df_port_cust_dist_input['Dist_to_Pipavav_Port'], errors='coerce')
 
-        # 合并港口距离数据到主位置数据表 (df_locations)
+        # Merge port distance data into the main location data table (df_locations)
         df_locations = pd.merge(df_locations_input, df_port_cust_dist_input[['Customer_Location', 'Dist_to_Chennai_Port', 'Dist_to_Pipavav_Port']],
                                 on="Customer_Location", how="left")
-        df_locations['Cust_ID'] = df_locations['Customer_Location'] # 使用 Customer_Location 作为后续模型中的唯一客户ID
+        df_locations['Cust_ID'] = df_locations['Customer_Location'] # Use Customer_Location as the unique customer ID in subsequent models
         return df_locations

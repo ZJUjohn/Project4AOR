@@ -8,9 +8,10 @@ class Q1Solver:
 
     def solve(self):
         """
-        计算在当前情景下，汽车从工厂通过公路拖车直接运往不同客户地点的出站汽车分销总成本。
-        返回:
-            tuple: (总直接运输成本, 更新了成本详情的DataFrame)
+        Calculates the total outbound automotive distribution cost for transporting cars directly
+        from factories to different customer locations via road trailers under the current scenario.
+        Returns:
+            tuple: (Total direct transport cost, DataFrame updated with cost details)
         """
         df_q1 = self.df_locations.copy()
         for am_id in ['AM1', 'AM2', 'AM3']:

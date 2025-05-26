@@ -1,5 +1,5 @@
 # Project 13 for Applied Operations Research I
-#### Advised by Prof. ZHOU Weihua and CUI Zheng
+#### Advised by Prof. ZHOU Weihua and CUI Zheng (School of Management, Zhejiang University)
 
 This project aims to optimize transportation logistics for a vehicle distribution system using various methods, including direct trucking and coastal shipping. The project is structured into several modules, each responsible for specific tasks, making it easier to maintain and extend.
 
@@ -14,7 +14,7 @@ Project4AOR
 │   ├── q1_solver.py         # Solves question 1: Direct transportation costs
 │   ├── q2_solver.py         # Solves question 2: Suitable locations for coastal transport
 │   ├── q3_optimizer.py      # Optimizes the coastal transportation system design
-│   ├── plotting.py # Draw some pictures for question 1, 2 and 3
+│   ├── plotting.py          # Draw some pictures for question 1, 2 and 3
 │   └── config.py            # Configuration constants and parameters
 ├── data
 │   └── DATA_original.xlsx    # Original data for calculations
@@ -40,20 +40,23 @@ python -m solve.main
 
 This will sequentially solve questions 1 and 2, and then optimize the coastal transportation system for question 3.
 
-To get the pictures in `results/academic_plots` by yourself:
+To get the pictures in `plots/` by yourself:
 
 ```shell
 python -m solve.plotting
 ```
-
 ## Module Descriptions
 
-- **data_loader.py**: Contains functions to load and preprocess data from the Excel file. It ensures that the data is in the correct format for further analysis.
+- **`solve/main.py`**: The main entry point for the project. It coordinates the execution of various modules, sequentially running the solvers for Question 1 and Question 2, and the optimizer for Question 3. It may also trigger the output of results or plotting.
 
-- **q1_solver.py**: Implements the logic to calculate direct transportation costs based on customer demand and distances.
+- **`solve/data_loader.py`**: Contains functions to load and preprocess data from the Excel file (`data/DATA_original.xlsx`). It ensures that data is correctly read, cleaned, and transformed into a format suitable for subsequent analysis and model input.
 
-- **q2_solver.py**: Analyzes the results from question 1 to identify customer locations that are suitable for switching to coastal transportation.
+- **`solve/q1_solver.py`**: Implements the solution logic for Question 1. It calculates the transportation costs for all customer locations via direct trucking, based on customer demand, distances, and other relevant data.
 
-- **q3_optimizer.py**: Uses the results from the previous questions to optimize the transportation system design, minimizing costs while meeting demand.
+- **`solve/q2_solver.py`**: Implements the solution logic for Question 2. It analyzes the results from Question 1 and other relevant data (such as potential cost savings from coastal shipping) to identify customer locations suitable for switching from direct trucking to coastal transportation.
 
-- **config.py**: Stores configuration parameters such as cost constants and other fixed values used throughout the project.
+- **`solve/q3_optimizer.py`**: Implements the optimization model for Question 3. Using the results from the previous two questions, it builds and solves an optimization model to design the optimal transportation system (potentially combining trucking and coastal shipping) to minimize total transportation costs while meeting all customer demands and operational constraints.
+
+- **`solve/plotting.py`**: Contains functions to generate visualizations and plots related to the results of Questions 1, 2, and 3. These plots aid in results analysis and presentation, and are saved to the `plots/` directory.
+
+- **`solve/config.py`**: Stores global configuration parameters for the project, such as cost constants, rates, distance thresholds, file paths, and other fixed values or settings shared across different modules.

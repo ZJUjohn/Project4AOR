@@ -12,9 +12,11 @@ class Q2Solver:
 
     def solve(self):
         """
-        识别哪些客户地点适合从纯公路运输转向沿海多式联运。
-        返回:
-            tuple: (更新了多式联运成本和适用性判断的DataFrame, 用于打印的摘要DataFrame)
+        Identifies which customer locations are suitable for switching from
+        pure road transport to coastal multimodal transport.
+        Returns:
+            tuple: (DataFrame updated with multimodal costs and suitability assessment,
+                    summary DataFrame for printing)
         """
         results_q2_summary_list = []
 
@@ -33,9 +35,9 @@ class Q2Solver:
                 if demand_for_am == 0:
                     for ship_letter in ['A', 'B']:
                         self.df_q2.loc[index, f'{am_id}_MM_Cost_PU_Ship{ship_letter}'] = np.inf
-                        self.df_q2.loc[index, f'{am_id}_Suitable_Ship{ship_letter}'] = "N/A (无需求)"
+                        self.df_q2.loc[index, f'{am_id}_Suitable_Ship{ship_letter}'] = "N/A (No Demand)"
                         summary_row[f'{am_id}_Min_MM_Cost_PU_Ship{ship_letter}'] = np.inf
-                        summary_row[f'{am_id}_Suitable_Ship{ship_letter}'] = "N/A (无需求)"
+                        summary_row[f'{am_id}_Suitable_Ship{ship_letter}'] = "N/A (No Demand)"
                     continue
 
                 min_mm_cost_ship_a_for_am_cust = np.inf
@@ -85,14 +87,14 @@ class Q2Solver:
                     min_mm_cost_ship_b_for_am_cust = min(min_mm_cost_ship_b_for_am_cust, current_mm_cost_ship_b_path)
 
                 self.df_q2.loc[index, f'{am_id}_MM_Cost_PU_ShipA'] = min_mm_cost_ship_a_for_am_cust
-                self.df_q2.loc[index, f'{am_id}_Suitable_ShipA'] = "适合" if min_mm_cost_ship_a_for_am_cust < direct_cost_pu else "不适合"
+                self.df_q2.loc[index, f'{am_id}_Suitable_ShipA'] = "Suitable" if min_mm_cost_ship_a_for_am_cust < direct_cost_pu else "Not Suitable"
                 if min_mm_cost_ship_a_for_am_cust == np.inf :
-                     self.df_q2.loc[index, f'{am_id}_Suitable_ShipA'] = "N/A (无有效海运路径)"
+                     self.df_q2.loc[index, f'{am_id}_Suitable_ShipA'] = "N/A (No Valid Sea Route)"
 
                 self.df_q2.loc[index, f'{am_id}_MM_Cost_PU_ShipB'] = min_mm_cost_ship_b_for_am_cust
-                self.df_q2.loc[index, f'{am_id}_Suitable_ShipB'] = "适合" if min_mm_cost_ship_b_for_am_cust < direct_cost_pu else "不适合"
+                self.df_q2.loc[index, f'{am_id}_Suitable_ShipB'] = "Suitable" if min_mm_cost_ship_b_for_am_cust < direct_cost_pu else "Not Suitable"
                 if min_mm_cost_ship_b_for_am_cust == np.inf :
-                     self.df_q2.loc[index, f'{am_id}_Suitable_ShipB'] = "N/A (无有效海运路径)"
+                     self.df_q2.loc[index, f'{am_id}_Suitable_ShipB'] = "N/A (No Valid Sea Route)"
 
 
                 summary_row[f'{am_id}_Min_MM_Cost_PU_ShipA'] = min_mm_cost_ship_a_for_am_cust
