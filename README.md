@@ -14,19 +14,8 @@ Project4AOR
 │   ├── q1_solver.py         # Solves question 1: Direct transportation costs
 │   ├── q2_solver.py         # Solves question 2: Suitable locations for coastal transport
 │   ├── q3_optimizer.py      # Optimizes the coastal transportation system design
-│   ├── enhanced_plotting.py # Draw some pictures for question 1, 2 and 3
+│   ├── plotting.py # Draw some pictures for question 1, 2 and 3
 │   └── config.py            # Configuration constants and parameters
-├── plotting/
-│   ├── plotting.py
-│   └── plotting_modules/
-│       ├──── __init__.py
-│       ├──── config.py
-│       ├──── chart_1_cost_volume.py
-│       ├──── chart_2_am_split.py
-│       ├──── chart_3_q2_suitability.py
-│       ├──── chart_4_sankey_flows.py
-│       ├──── chart_5_kpi_summary.py
-│       └──── generate_all_plots_logic.py
 ├── data
 │   └── DATA_original.xlsx    # Original data for calculations
 ├── README.md                 # Project documentation
@@ -54,7 +43,7 @@ This will sequentially solve questions 1 and 2, and then optimize the coastal tr
 To get the pictures in `results/academic_plots` by yourself:
 
 ```shell
-python plotting/main.py
+python -m solve.plotting
 ```
 
 ## Module Descriptions
