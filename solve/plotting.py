@@ -356,7 +356,7 @@ def plot_suitability_bubble(df_q2_summary, q1_data_for_demand, df_q3_coastal_vol
         # --- Bubble Size Parameters (Continuous Scaling) ---
         # Define the range of bubble areas for the plot (min_area, max_area)
         # These values are in points^2. Adjust for desired visual effect.
-        plot_bubble_area_range = (10, 1000) 
+        plot_bubble_area_range = (25, 3000) 
         
         # Representative demand values for the legend and their labels
         legend_size_demand_values = [1, 10, 100, 1000, 10000]

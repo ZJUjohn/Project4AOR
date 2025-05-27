@@ -22,7 +22,7 @@ SEA_DISTANCE_NM_ONE_WAY = 500
 def get_optimized_land_unit_cost(distance):
     if distance is None or pd.isna(distance): return 1e9 # High cost for missing distance
     return distance * 0.1 # Example cost
-TIME_PER_ONE_WAY_VOYAGE_LEG_DAYS = {'ShipA': 5, 'ShipB': 6}
+TIME_PER_ONE_WAY_VOYAGE_LEG_DAYS = {'ShipA': 6.46, 'ShipB': 5.41}
 ANNUAL_OPERATING_DAYS = 365
 CUSTOMER_SHIP_ELIGIBILITY = { # Example: {'AM1': {'Customer1': {'ShipA': True, 'ShipB': False}}}
     'AM1': {
@@ -421,14 +421,18 @@ class Q3Optimizer:
                         pair_sorted_names_bal = sorted([p1_name_safe_bal, p2_name_safe_bal])
                         constraint_base_name_bal = f"BalanceVoyages_{s_bal_ship}_{pair_sorted_names_bal[0]}_vs_{pair_sorted_names_bal[1]}"
 
-                        # V(P1->P2) - V(P2->P1) <= 1
-                        model.addConstr(voyages_p1_to_p2 - voyages_p2_to_p1 <= 1,
+                        # V(P1->P2) - V(P2->P1) == 0
+                        model.addConstr(voyages_p1_to_p2 - voyages_p2_to_p1 == 0,
                                         name=f"{constraint_base_name_bal}_Diff1")
-                        
-                        # V(P2->P1) - V(P1->P2) <= 1
-                        model.addConstr(voyages_p2_to_p1 - voyages_p1_to_p2 <= 1,
-                                        name=f"{constraint_base_name_bal}_Diff2")
+                    
                         # print(f"  CONSTRAINT ADDED (Voyage Balance): For {s_bal_ship} between {p1_bal_port} and {p2_bal_port}")
+
+                        # 假设 x_direct 和 x_coastal 已经被正确定义
+        # min_am3_shipment = 100000 # 举例，设置一个最小运输量
+        # model.addConstr(
+        #     cp.quicksum(x_direct[i,j] for (i,j) in x_direct if i == 'AM3') + \
+        #     cp.quicksum(x_coastal[i,j,p,q,s] for (i,j,p,q,s) in x_coastal if i == 'AM3') >= min_am3_shipment
+        # )
         # --- End of Voyage Balancing Constraint Block ---
 
         # --- Solve the model ---
